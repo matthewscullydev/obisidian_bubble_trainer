@@ -50,6 +50,6 @@ Then in the Obsidian Files and Links settings find the setting which says Exclud
 This allows you to create and preserve mental maps while keeping your graph view tidy.
 
 In order to use these maps again in graph view simply move all files out of the subfolder you created back into the main folder with:
-
+```
 cd name_of_subject; mv *.md ../
-
+```
