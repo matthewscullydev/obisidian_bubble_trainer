@@ -3,7 +3,9 @@
 
 ---
 
-https://github.com/matthewscullydev/obsidian_bubble_trainer/assets/26017402/69d626f5-7a26-4185-9f35-40cd8b52ca8e
+
+https://github.com/matthewscullydev/obsidian_bubble_trainer/assets/26017402/591dc682-0536-4b29-8c83-4d2b85913cf3
+
 
 Given an obsidian markdown file path this program will turn every reference into a string of question marks.
 
