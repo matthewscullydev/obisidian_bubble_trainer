@@ -3,9 +3,7 @@
 
 ---
 
-<blockquote class="imgur-embed-pub" lang="en" data-id="a/vdoI9Gu" data-context="false" ><a href="//imgur.com/a/vdoI9Gu"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
-
-
+https://github.com/matthewscullydev/obsidian_bubble_trainer/assets/26017402/69d626f5-7a26-4185-9f35-40cd8b52ca8e
 
 Given an obsidian markdown file path this program will turn every reference into a string of question marks.
 
