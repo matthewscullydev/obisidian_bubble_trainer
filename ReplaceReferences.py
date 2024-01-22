@@ -1,5 +1,7 @@
 
 import re
+import os
+import time
 
 def parse_markdown(file_path):
     # Define a dictionary to store replaced text
@@ -16,7 +18,7 @@ def parse_markdown(file_path):
     def replace_text(match):
         text_to_replace = match.group(1)
         references[len(references)] = text_to_replace
-        question_marks = '?' * (len(references) + 2)  # Append two extra question marks for each replacement
+        question_marks = '?' * (len(references))  # Append two extra question marks for each replacement
         return f'[[{question_marks}]]'
 
     replaced_content = re.sub(pattern, replace_text, markdown_content)
@@ -25,50 +27,109 @@ def parse_markdown(file_path):
     with open(file_path, 'w') as file:
         file.write(replaced_content)
 
-    # Print the replaced content
-    print(replaced_content)
+    # Check other markdown files in the parent directory
+    parent_directory_path = os.path.dirname(file_path)
 
-    # Print the associative dictionary
-    print("Associative Dictionary:")
-    print(references)
+    for filename in os.listdir(parent_directory_path):
+        if filename.endswith('.md') and filename != os.path.basename(file_path):
+            original_filename = os.path.splitext(filename)[0]
 
-    # User interaction loop
+            # Check if the file name is a reference
+            if original_filename in references.values():
+                position = list(references.values()).index(original_filename)
+                associated_string = '?' * (position + 1)
+                new_file_path = os.path.join(parent_directory_path, associated_string + '.md')
+                os.rename(os.path.join(parent_directory_path, filename), new_file_path)
+
+    start_time = time.time()
+
+    # Prompt the user to resolve references
+    skipped_indices = []
+
     for index in range(len(references)):
-        user_input = input(f"What is the value at associative array index {index}? ")
+        user_input = input(f"\nWhat is the subject for {'?' * (index + 1)}\n ").lower()
 
         # Check if user input is correct
-        if user_input == references[index]:
-            print("Correct!")
+        if user_input == references[index].lower():
+            print("\nCorrect!")
 
             # Write back the correct value to the Markdown file
-            replaced_content = replaced_content.replace(f'[[{"?" * (index + 3)}]]', f'[[{references[index]}]]', 1)
+            replaced_content = replaced_content.replace(f'[[{"?" * (index + 1)}]]', f'[[{references[index]}]]', 1)
             with open(file_path, 'w') as file:
                 file.write(replaced_content)
+
+            # Rename the file back to the correct value
+            restored_filename = os.path.join(parent_directory_path, references[index] + '.md')
+            os.rename(new_file_path, restored_filename)
+
+            question_marks = '?' * (index + 2)
+            filename_without_extension, extension = os.path.splitext(restored_filename)
+            new_path = os.path.dirname(filename_without_extension) + '/'
+            new_file_path = f'{new_path}{question_marks}.md'
+
         else:
+            skipped_indices.append(index)
             while True:
-                retry_input = input("Incorrect! Try again? (Y/N): ")
-                if retry_input.upper() == 'Y':
-                    user_input = input(f"What is the value at associative array index {index}? ")
-                    if user_input == references[index]:
-                        print("Correct!")
+                retry_input = input("\nIncorrect! Try again? (Y/N):").lower()
+                if retry_input == 'y':
+                    user_input = input(f"\nWhat is the subject for {'?' * (index + 1)}\n ").lower()
+                    if user_input == references[index].lower():
+                        print("\nCorrect!")
 
                         # Write back the correct value to the Markdown file
-                        replaced_content = replaced_content.replace(f'[[{"?" * (index + 3)}]]', f'[[{references[index]}]]', 1)
+                        replaced_content = replaced_content.replace(f'[[{"?" * (index + 1)}]]', f'[[{references[index]}]]', 1)
                         with open(file_path, 'w') as file:
                             file.write(replaced_content)
-                        break
-                elif retry_input.upper() == 'N':
-                    print("Moving to the next index.")
 
-                    # Write back the value stored at the current index before moving to the next index
-                    replaced_content = replaced_content.replace(f'[[{"?" * (index + 3)}]]', f'[[{references[index]}]]', 1)
-                    with open(file_path, 'w') as file:
-                        file.write(replaced_content)
+                        # Rename the file back to the correct value
+                        restored_filename = os.path.join(parent_directory_path, references[index] + '.md')
+                        os.rename(new_file_path, restored_filename)
+
+                        question_marks = '?' * (index + 2)
+                        filename_without_extension, extension = os.path.splitext(restored_filename)
+                        new_path = os.path.dirname(filename_without_extension) + '/'
+                        new_file_path = f'{new_path}{question_marks}.md'
+
+                        # Remove the index from skipped_indices since the user got it correct after retrying
+                        if index in skipped_indices:
+                            skipped_indices.remove(index)
+
+                        break
+                elif retry_input == 'n':
+                    print("\nMoving to the next index.")
+
+                    restored_filename = os.path.join(parent_directory_path, references[index] + '.md')
+
+                    question_marks = '?' * (index + 2)
+                    filename_without_extension, extension = os.path.splitext(restored_filename)
+                    new_path = os.path.dirname(filename_without_extension) + '/'
+                    new_file_path = f'{new_path}{question_marks}.md'
 
                     break
                 else:
                     print("Invalid input. Please enter Y or N.")
 
+        # Process skipped indices
+    for skipped_index in skipped_indices:
+        # Write back the correct value to the Markdown file for skipped indices
+        replaced_content = replaced_content.replace(f'[[{"?" * (skipped_index + 1)}]]', f'[[{references[skipped_index]}]]', 1)
+
+        # Rename the file back to the correct value for skipped indices
+        restored_filename = os.path.join(parent_directory_path, references[skipped_index] + '.md')
+        new_file_path = os.path.join(parent_directory_path, '?' * (skipped_index + 1) + '.md')
+        os.rename(new_file_path, restored_filename)
+
+    # Write back the correct values for skipped indices to the Markdown file
+    with open(file_path, 'w') as file:
+        file.write(replaced_content)
+
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    retention_rate = (len(references) - len(skipped_indices)) / len(references) if len(references) != 0 else 0
+
+    print(f"\nTime taken to finish: {elapsed_time:.2f} seconds")
+    print(f"Retention rate: {retention_rate * 100:.2f}% (Correct: {len(references) - len(skipped_indices)}/{len(references)})")
+
 # Example usage:
-file_path = '/home/matt/Documents/Obsidian Vault/TestFile.md'
+file_path = '/home/matt/Documents/obsidian_bubble_vault/bubble_trainer/History.md'
 parse_markdown(file_path)
