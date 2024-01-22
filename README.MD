@@ -20,22 +20,6 @@ Once all references have been resolved the user will recieve the following stati
     - Speed
 
 
-### Free Mode
-
----
-
-If the user enters free mode every reference will be turned into a string of question marks.
-
-The user will not be asked to resolve any references. It will be up to them to enter values that resolve references.
-
-For every string input that matches a reference will be resolved.
-
-If the user finishes all references statistics for performance will be returned
-
-otherwise the user can press F to finish and all references will be resolved and statstics will be returned.
-
-
-
 ### Saving and Seperating Mental Maps
 
 ---
