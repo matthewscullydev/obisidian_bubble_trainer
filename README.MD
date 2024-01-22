@@ -24,7 +24,7 @@ Once all references have been resolved the user will recieve the following stati
 
 ---
 
-To keep the graph view clear while maintaining your collection of mind maps you should do the following:
+To keep the graph view clear while maintaining your collection of mind maps you should do the following inside your obsidian vault:
 ```
  mkdir name_of_subject
  mv *.md name_of_subject
