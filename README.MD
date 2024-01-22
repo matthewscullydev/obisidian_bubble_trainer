@@ -3,7 +3,7 @@
 
 ---
 
-![Example Video](https://imgur.com/a/vdoI9Gu)
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/vdoI9Gu" data-context="false" ><a href="//imgur.com/a/vdoI9Gu"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
 
 
 
