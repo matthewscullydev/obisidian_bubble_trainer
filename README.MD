@@ -3,6 +3,10 @@
 
 ---
 
+![Example Video](https://imgur.com/vdoI9Gu)
+
+
+
 Given an obsidian markdown file path this program will turn every reference into a string of question marks.
 
 This will be done starting at the first reference and ending at the last
