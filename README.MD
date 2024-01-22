@@ -3,7 +3,7 @@
 
 ---
 
-![Example Video](https://imgur.com/vdoI9Gu)
+![Example Video](https://imgur.com/a/vdoI9Gu)
 
 
 
