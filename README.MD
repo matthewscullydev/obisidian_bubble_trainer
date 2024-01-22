@@ -42,8 +42,8 @@ otherwise the user can press F to finish and all references will be resolved and
 
 To keep the graph view clear while maintaining your collection of mind maps you should do the following:
 
-mkdir name_of_subject
-mv *.md name_of_subject
+- mkdir name_of_subject
+- mv *.md name_of_subject
 
 Then in the Obsidian Files and Links settings find the setting which says Excluded Files and select name_of_subject/
 
